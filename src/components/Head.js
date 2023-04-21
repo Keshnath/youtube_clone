@@ -1,10 +1,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
+import { Link } from "react-router-dom";
 
 function Head() {
   const dispatch = useDispatch();
-  function toggleMenuHandler(){
+  function toggleMenuHandler() {
     dispatch(toggleMenu());
   }
   return (
@@ -14,8 +15,9 @@ function Head() {
           className="h-8 ml-2 cursor-pointer"
           alt="menu"
           src="https://w7.pngwing.com/pngs/616/930/png-transparent-hamburger-button-computer-icons-menu-bar-line-thumbnail.png"
-          onClick={()=>toggleMenuHandler()}
+          onClick={() => toggleMenuHandler()}
         />
+
         <img
           className="h-8 ml-4"
           alt="youtube-logo"
