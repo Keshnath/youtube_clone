@@ -1,13 +1,54 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
+import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { addCache } from "../utils/apiCacheSlice";
 
 function Head() {
   const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState("");
+  const [suggestionsList, setsuggestionsList] = useState([]);
+  const [searchDropDown, setSearchDropDown] = useState(false);
+  const searchCahce = useSelector((state) => state.ApiCache);
+
   function toggleMenuHandler() {
     dispatch(toggleMenu());
   }
+
+  const searchTextApi = async () => {
+    console.log("Apicall -- ", searchText);
+    const data = await fetch(YOUTUBE_SEARCH_API + searchText);
+    const json = await data.json();
+    setsuggestionsList(json[1]);
+    dispatch(
+      addCache({
+        [searchText]: json[1],
+      })
+    );
+  };
+
+  useEffect(() => {
+    /**
+     * make api call after every key press due to change of search text(ex. b b k i v i n e s) we are pressing key very slow show
+     * it making call and generating decision for all the characters . and with every key press settimeout is created but what if
+     * we press the another key during the 200ms wait of settimeout . then we have to clear that old api call and start a new call with new '
+     * search text which reduce our api call
+     *  this is called as debauncing
+     */
+
+    const timer = setTimeout(() => {
+      if (searchCahce[searchText]) {
+        return setsuggestionsList(searchCahce[searchText]);
+      } else {
+        searchTextApi();
+      }
+    }, 200);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchText]);
+
   return (
     <div className="h-14 shadow-lg grid grid-flow-col items-center">
       <div className="flex col-span-1">
@@ -25,14 +66,37 @@ function Head() {
         />
       </div>
       <div className="">
-        <input
-          type="text"
-          className="w-[29rem] h-8 rounded-l-full border border-gray-300 pl-2 "
-          placeholder="Search ..."
-        />
-        <button className="rounded-r-full border border-gray-300 h-8 pr-2">
-          Search
-        </button>
+        <div>
+          <input
+            type="text"
+            className="w-[29rem] h-8 rounded-l-full border border-gray-300 px-5 "
+            placeholder="Search ..."
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+            onFocus={() => {
+              setSearchDropDown(true);
+            }}
+            onBlur={() => {
+              setSearchDropDown(false);
+            }}
+          />
+          <button className="rounded-r-full border border-gray-300 h-8 pr-2">
+            Search
+          </button>
+        </div>
+        {searchDropDown && (
+          <div className=" bg-white ml-2 px-3 w-[28.5rem] rounded-lg shadow-lg absolute">
+            <ul>
+              {suggestionsList.map((e) => (
+                <li className="p-2 hover:bg-gray-300 rounded-lg " key={e}>
+                  {e}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="flex justify-end mr-5">
         <img
