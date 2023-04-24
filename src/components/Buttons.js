@@ -14,8 +14,10 @@ function Buttons() {
   ];
   return (
     <div className="m-3 ">
-      {buttonNames.map((e,index) => (
-        <button className="m-2 bg-gray-300 rounded-md p-1" key={index}>{e}</button>
+      {buttonNames.map((e, index) => (
+        <button className="m-2 bg-gray-300 rounded-md p-1" key={index}>
+          {e}
+        </button>
       ))}
     </div>
   );

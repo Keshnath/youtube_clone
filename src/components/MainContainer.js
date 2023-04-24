@@ -1,13 +1,13 @@
-import React from 'react'
-import VideoContainer from './VideoContainer';
-import Buttons from './Buttons';
+import React from "react";
+import VideoContainer from "./VideoContainer";
+import Buttons from "./Buttons";
 const MainContainer = () => {
   return (
-    <div className='box-border'>
-        <Buttons/>
-        <VideoContainer/>
+    <div className="box-border">
+      <Buttons />
+      <VideoContainer />
     </div>
-  )
-}
+  );
+};
 
-export default MainContainer ;
+export default MainContainer;

@@ -1,21 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const appSlice = createSlice({
-    name : "cart",
-    initialState : {
-        isMenuOpen : true  
+  name: "cart",
+  initialState: {
+    isMenuOpen: true,
+  },
+  reducers: {
+    toggleMenu: (state) => {
+      state.isMenuOpen = !state.isMenuOpen;
     },
-    reducers :{
-        toggleMenu : (state)=>{
-            state.isMenuOpen = !state.isMenuOpen
-        },
-        closeMenu : (state)=>{
-            state.isMenuOpen = false 
-        },
-        
-    }
+    closeMenu: (state) => {
+      state.isMenuOpen = false;
+    },
+  },
 });
 
-
-export const{toggleMenu , closeMenu} = appSlice.actions;
-export default appSlice .reducer ; 
+export const { toggleMenu, closeMenu } = appSlice.actions;
+export default appSlice.reducer;
