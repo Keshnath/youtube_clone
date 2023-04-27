@@ -10,6 +10,7 @@ const useVideosApi = () => {
   const youtubeApiCall = async () => {
     const data = await fetch(YOUTUBE_VIDEOS_API);
     const json = await data.json();
+    console.log(json);
     setvideos(json.items);
   };
   return videos;

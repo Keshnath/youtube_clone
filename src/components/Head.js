@@ -17,7 +17,6 @@ function Head() {
   }
 
   const searchTextApi = async () => {
-    console.log("Apicall -- ", searchText);
     const data = await fetch(YOUTUBE_SEARCH_API + searchText);
     const json = await data.json();
     setsuggestionsList(json[1]);
